@@ -11,6 +11,7 @@ import { UserService } from './service/user.service';
 import {JwtInterceptor} from "./_helpers/jwt.interceptor";
 import {ErrorInterceptor} from "./_helpers/error.interceptor";
 import { LoginComponent } from './login/login.component';
+import {fakeBackendProvider} from "./_helpers/fake-backend";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { LoginComponent } from './login/login.component';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    UserService],
+    UserService,
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

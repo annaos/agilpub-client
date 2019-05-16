@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {User} from "./model/user";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "./service/authentication.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -15,15 +16,24 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService, private http: HttpClient,
   ) {
     this.title = 'Spring Boot - Angular Application';
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    //this.authenticationService.authenticate(undefined, undefined);
+
   }
 
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
+  // logout2() {
+  //   this.http.post('logout', {}).finally(() => {
+  //     this.authenticationService.authenticated = false;
+  //     this.router.navigateByUrl('/login');
+  //   }).subscribe();
+  // }
+
 
 }

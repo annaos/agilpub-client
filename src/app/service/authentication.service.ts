@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -9,6 +9,7 @@ import { User } from '../model/user';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  authenticated = false;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -20,6 +21,9 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
+    const headers = new HttpHeaders({authorization : 'Basic ' + btoa(username + ':' + password)});
+
+    console.log('I am in login()');
     return this.http.post<any>(`http://localhost:8080/users/authenticate`, { username, password })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
@@ -31,6 +35,27 @@ export class AuthenticationService {
 
         return user;
       }));
+
+
+
+  }
+
+  authenticate(username: string, password: string, callback) {
+    const headers = new HttpHeaders({authorization : 'Basic ' + btoa(username + ':' + password)});
+
+    console.log('I am in authenticate()');
+
+    return this.http.get('http://localhost:8080/users/authenticate', {headers: headers})
+      .subscribe(response => {
+        if (response['name']) {
+          this.authenticated = true;
+          localStorage.setItem('currentUser', JSON.stringify(response));
+          //this.currentUserSubject.next(response);
+          return response;
+        } else {
+          this.authenticated = false;
+        }
+      });
   }
 
   logout() {
