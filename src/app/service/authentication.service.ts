@@ -20,6 +20,10 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
+  public get admin(): boolean {
+    return this.currentUserSubject.value.admin;
+  }
+
   login(username: string, password: string) {
     const headers = new HttpHeaders({authorization : 'Basic ' + btoa(username + ':' + password)});
 

@@ -4,19 +4,45 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 import { User } from '../model/user';
+import {Document} from "../model/document";
+import {DocumentVersion} from "../model/document-version";
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const users: User[] = [
-      { id: '1', username: 'test', password: 'test', name: 'Test', email: 'test', admin: true }
+      { id: '1', username: 'test', password: 'test', name: 'Test', email: 'test', admin: true },
+      { id: '2', username: 'anna', password: 'test', name: 'Anna', email: 'test', admin: true }
     ];
+
+    const documents: Document[] = [
+      { id: '1', name: 'Homomorphic Signature', createdDate: new Date(), owner: users[0], versions: null },
+      { id: '2', name: 'Algebra', createdDate: new Date(), owner: users[0], versions: null },
+      { id: '3', name: 'Combinatorics', createdDate: new Date(), owner: users[0], versions: null }
+    ];
+
+    const documentVersions: DocumentVersion[] = [
+      { id: '1', createdDate: new Date(), version: 1, file: 'Version1', document: documents[0] },
+      { id: '2', createdDate: new Date(), version: 1, file: 'Version2', document: documents[0] },
+      { id: '3', createdDate: new Date(), version: 1, file: 'Version3', document: documents[0] }
+    ];
+
+    const documentVersions1: DocumentVersion[] = [
+      { id: '4', createdDate: new Date(), version: 1, file: 'Version1', document: documents[1] },
+    ];
+    const documentVersions2: DocumentVersion[] = [
+      { id: '5', createdDate: new Date(), version: 1, file: 'Version1', document: documents[2] },
+    ];
+    documents[0].versions = documentVersions;
+    documents[1].versions = documentVersions1;
+    documents[2].versions = documentVersions2;
 
     const authHeader = request.headers.get('Authorization');
     const isLoggedIn = authHeader && authHeader.startsWith('Bearer fake-jwt-token');
 
     // wrap in delayed observable to simulate server api call
     return of(null).pipe(mergeMap(() => {
+
       console.log('I am in FakeBackendInterceptor');
 
       // authenticate - public
@@ -35,6 +61,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (request.url.endsWith('/users') && request.method === 'GET') {
         if (!isLoggedIn) return unauthorised();
         return ok(users);
+      }
+
+      // get all users
+      if (request.url.endsWith('/documents') && request.method === 'GET') {
+        if (!isLoggedIn) return unauthorised();
+        return ok(documents);
       }
 
       // pass through any requests not handled above

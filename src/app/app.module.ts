@@ -12,13 +12,15 @@ import {JwtInterceptor} from "./_helpers/jwt.interceptor";
 import {ErrorInterceptor} from "./_helpers/error.interceptor";
 import { LoginComponent } from './login/login.component';
 import {fakeBackendProvider} from "./_helpers/fake-backend";
+import { DocumentListComponent } from './document-list/document-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
     UserFormComponent,
-    LoginComponent
+    LoginComponent,
+    DocumentListComponent
   ],
   imports: [
     BrowserModule,

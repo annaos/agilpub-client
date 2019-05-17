@@ -18,7 +18,7 @@ export class AppComponent {
     private router: Router,
     private authenticationService: AuthenticationService, private http: HttpClient,
   ) {
-    this.title = 'Spring Boot - Angular Application';
+    this.title = 'Agile Publikationsprozess';
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     //this.authenticationService.authenticate(undefined, undefined);
 
