@@ -25,7 +25,7 @@ export class DocumentListComponent implements OnInit {
     });
 
     this.documentService.findAll().subscribe(data => {
-      this.allDocuments = data;//TODO without myDouments
+      this.allDocuments = data;//TODO without myDocuments
     });
   }
 

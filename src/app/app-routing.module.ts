@@ -5,11 +5,13 @@ import { UserFormComponent } from './user-form/user-form.component';
 import {AuthGuard} from "./_guards";
 import {LoginComponent} from "./login/login.component";
 import {DocumentListComponent} from "./document-list/document-list.component";
+import {DocumentVersionListComponent} from "./document-version-list/document-version-list.component";
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent, canActivate: [AuthGuard] },
   { path: 'documents', component: DocumentListComponent, canActivate: [AuthGuard] },
   { path: 'adduser', component: UserFormComponent, canActivate: [AuthGuard] },
+  { path: 'versions/:id', component: DocumentVersionListComponent, canActivate: [AuthGuard] },
 
   {
     path: 'login',

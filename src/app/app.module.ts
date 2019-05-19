@@ -13,6 +13,8 @@ import {ErrorInterceptor} from "./_helpers/error.interceptor";
 import { LoginComponent } from './login/login.component';
 import {fakeBackendProvider} from "./_helpers/fake-backend";
 import { DocumentListComponent } from './document-list/document-list.component';
+import { DocumentVersionListComponent } from './document-version-list/document-version-list.component';
+import {createdDateFormatPipe} from "./_helpers";
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { DocumentListComponent } from './document-list/document-list.component';
     UserListComponent,
     UserFormComponent,
     LoginComponent,
-    DocumentListComponent
+    DocumentListComponent,
+    DocumentVersionListComponent,
+    createdDateFormatPipe
   ],
   imports: [
     BrowserModule,

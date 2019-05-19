@@ -1,0 +1,28 @@
+<div class="card my-5">
+  <div class="card-body">
+    <p>Versionen von {{document.name}}</p>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Version</th>
+        <th scope="col">Datum</th>
+        <th scope="col">Anzahl Kommentare</th>
+        <th scope="col">Datei öffnen</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let version of versions">
+        <td>{{ version.id }}</td>
+        <td>{{ version.version }}</td>
+<!--        <td>{{ version.createdDate | date:'dd.MM.yyyy \'um\' HH:mm:ss'}}</td> old date format -->
+        <td>{{ version.createdDate | createdDateFormat }}</td>
+        <td>TODO</td>
+        <td>{{ version.file }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <span class="btn btn-info">new Version erstellen</span>
+  </div>
+
+</div>

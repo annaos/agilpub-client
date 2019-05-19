@@ -1,59 +1,60 @@
 <div class="card my-5">
-    <div class="card-body">
+  <div class="card-body">
     <p>Meine Dokumente</p>
-      <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Datum</th>
-            <th scope="col">Anzahl von Versionen</th>
-            <th scope="col">Liste von Versionen</th>
-            <th scope="col">Letzte Version</th>
-            <th scope="col">Neue Version hochladen</th>
-          </tr>
-      </thead>
-        <tbody>
-        <tr *ngFor="let document of myDocuments">
-            <td>{{ document.id }}</td>
-            <td>{{ document.name }}</td>
-            <td>{{ document.createdDate }}</td>
-            <td>{{ document.versions.length }}</td>
-            <td><span class="btn btn-info">list</span></td>
-            <td><span class="btn btn-info">last</span></td>
-            <td><span class="btn btn-info">new</span></td>
-          </tr>
-      </tbody>
-      </table>
-    </div>
+  <table class="table table-bordered table-striped">
+  <thead class="thead-dark">
+<tr>
+  <th scope="col">#</th>
+  <th scope="col">Name</th>
+  <th scope="col">Datum</th>
+  <th scope="col">Anzahl von Versionen</th>
+  <th scope="col">Liste von Versionen</th>
+  <th scope="col">Letzte Version</th>
+  <th scope="col">Neue Version hochladen</th>
+  </tr>
+</thead>
+  <tbody>
+<tr *ngFor="let document of myDocuments">
+  <td>{{ document.id }}</td>
+  <td>{{ document.name }}</td>
+  <td>{{ document.createdDate | createdDateFormat }}</td>
+  <td>{{ document.versions.length }}</td>
+  <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
+  <td><span class="btn btn-info">last</span></td>
+  <td><span class="btn btn-info">new</span></td>
+  </tr>
+</tbody>
+  </table>
+      <span class="btn btn-info">new Dokument erstellen</span>
+  </div>
 
-    <div class="card-body">
+  <div class="card-body">
     <p>Alle Dokumente</p>
-      <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Datum</th>
-            <th scope="col">Besitzer</th>
-            <th scope="col">Anzahl von Versionen</th>
-            <th scope="col">Aktion</th>
-          </tr>
-      </thead>
-        <tbody>
-        <tr *ngFor="let document of allDocuments">
-            <td>{{ document.id }}</td>
-            <td>{{ document.name }}</td>
-            <td>{{ document.owner.name }}</td>
-            <td>{{ document.createdDate }}</td>
-            <td>{{ document.versions.length }}</td>
-            <td>
-              <span class="btn btn-info">list</span>
-              <span class="btn btn-info">last</span>
-              <span *ngIf="authentificationService.admin" class="btn btn-info">new</span>
-            </td>
-          </tr>
-      </tbody>
-      </table>
-    </div>
+  <table class="table table-bordered table-striped">
+  <thead class="thead-dark">
+<tr>
+  <th scope="col">#</th>
+  <th scope="col">Name</th>
+  <th scope="col">Datum</th>
+  <th scope="col">Besitzer</th>
+  <th scope="col">Anzahl von Versionen</th>
+  <th scope="col">Aktion</th>
+  </tr>
+</thead>
+  <tbody>
+<tr *ngFor="let document of allDocuments">
+  <td>{{ document.id }}</td>
+  <td>{{ document.name }}</td>
+  <td>{{ document.createdDate | createdDateFormat }}</td>
+  <td>{{ document.owner.name }}</td>
+  <td>{{ document.versions.length }}</td>
+  <td>
+    <a [routerLink]="['/versions', document.id]" class="btn btn-info">list</a>
+    <span class="btn btn-info">last</span>
+    <span *ngIf="authentificationService.admin" class="btn btn-info">new</span>
+  </td>
+  </tr>
+</tbody>
+  </table>
+  </div>
 </div>

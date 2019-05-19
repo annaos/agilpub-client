@@ -29,6 +29,13 @@ export class DocumentService {
       }});
   }
 
+  public findById(id: string): Observable<Document> {
+    return this.http.get<Document>(this.documentsUrl, {
+      params: {
+        documentId: id,
+      }});
+  }
+
   public save(document: Document) {
     return this.http.post<Document>(this.documentsUrl, document);
   }

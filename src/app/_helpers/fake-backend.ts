@@ -66,7 +66,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       // get all users
       if (request.url.endsWith('/documents') && request.method === 'GET') {
         if (!isLoggedIn) return unauthorised();
+        if (request.params.has('documentId')){
+          return ok(documents[0]);
+        }
         return ok(documents);
+      }
+
+      // get all users
+      if (request.url.endsWith('/documentVersions') && request.method === 'GET') {
+        if (!isLoggedIn) return unauthorised();
+        return ok(documentVersions);
       }
 
       // pass through any requests not handled above
