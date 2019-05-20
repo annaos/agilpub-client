@@ -1,5 +1,5 @@
 <div class="card my-5">
-  <div class="card-body" *ngIf="document | async">
+  <div class="card-body" *ngIf="document">
     <p>Versionen von {{document.name}}</p>
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
@@ -22,7 +22,7 @@
       </tr>
       </tbody>
     </table>
-    <span class="btn btn-info">new Version erstellen</span>
+    <a [routerLink]="['/addversion', document.id]" class="btn btn-info">new Version erstellen</a>
   </div>
 
 </div>

@@ -1,6 +1,6 @@
 <div class="card my-5">
   <h3>Neue Version hochladen</h3>
-  <div class="card-body"  *ngIf="document | async">
+  <div class="card-body"  *ngIf="document">
     <div> Neue Version für {{ document.name }} hochladen </div>
     <form (ngSubmit)="onSubmit()" #documentForm="ngForm">
       <div class="form-group">
