@@ -1,0 +1,16 @@
+<div class="card my-5">
+  <h3>Neue Version hochladen</h3>
+  <div class="card-body"  *ngIf="document | async">
+    <div> Neue Version für {{ document.name }} hochladen </div>
+    <form (ngSubmit)="onSubmit()" #documentForm="ngForm">
+      <div class="form-group">
+        <label for="file">Datei</label>
+        <input type="text" [(ngModel)]="documentVersion.file"
+               id="file" name="file"
+               required #file="ngModel">
+        <div [hidden]="!file.pristine" class="alert alert-danger">Datei is required</div>
+      </div>
+      <button type="submit" [disabled]="!documentForm.form.valid" class="btn btn-info">Submit</button>
+    </form>
+  </div>
+</div>

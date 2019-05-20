@@ -18,7 +18,7 @@ export class DocumentVersionListComponent implements OnInit {
 
   constructor(private documentVersionService: DocumentVersionService,
               private documentService: DocumentService,
-              private authentificationService: AuthenticationService,
+              private authenticationService: AuthenticationService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {

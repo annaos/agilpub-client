@@ -15,6 +15,8 @@ import {fakeBackendProvider} from "./_helpers/fake-backend";
 import { DocumentListComponent } from './document-list/document-list.component';
 import { DocumentVersionListComponent } from './document-version-list/document-version-list.component';
 import {createdDateFormatPipe} from "./_helpers";
+import { DocumentFormComponent } from './document-form/document-form.component';
+import { DocumentVersionFormComponent } from './document-version-form/document-version-form.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import {createdDateFormatPipe} from "./_helpers";
     LoginComponent,
     DocumentListComponent,
     DocumentVersionListComponent,
-    createdDateFormatPipe
+    createdDateFormatPipe,
+    DocumentFormComponent,
+    DocumentVersionFormComponent
   ],
   imports: [
     BrowserModule,

@@ -21,11 +21,11 @@
   <td>{{ document.versions.length }}</td>
   <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
   <td><span class="btn btn-info">last</span></td>
-  <td><span class="btn btn-info">new</span></td>
-  </tr>
+  <td><a [routerLink]="['/addversion', document.id]" class="btn btn-info">new</a></td>
+</tr>
 </tbody>
   </table>
-      <span class="btn btn-info">new Dokument erstellen</span>
+      <a [routerLink]="['/adddocument']" class="btn btn-info">neue Dokument erstellen</a>
   </div>
 
   <div class="card-body">
@@ -51,7 +51,7 @@
   <td>
     <a [routerLink]="['/versions', document.id]" class="btn btn-info">list</a>
     <span class="btn btn-info">last</span>
-    <span *ngIf="authentificationService.admin" class="btn btn-info">new</span>
+<!--    <span *ngIf="authenticationService.admin" class="btn btn-info">new</span>-->
   </td>
   </tr>
 </tbody>

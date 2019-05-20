@@ -16,11 +16,11 @@ export class DocumentListComponent implements OnInit {
   allDocuments: Document[];
 
   constructor(private documentService: DocumentService,
-              private authentificationService: AuthenticationService
+              private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit() {
-    this.documentService.findByOwner(this.authentificationService.currentUserValue).subscribe(data => {
+    this.documentService.findByOwner(this.authenticationService.currentUserValue).subscribe(data => {
       this.myDocuments = data;
     });
 

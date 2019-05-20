@@ -1,5 +1,5 @@
 <div class="card my-5">
-  <div class="card-body">
+  <div class="card-body" *ngIf="document | async">
     <p>Versionen von {{document.name}}</p>
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">

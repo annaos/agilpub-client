@@ -5,5 +5,10 @@ export class DocumentVersion {
   createdDate: Date;
   version: number;
   file: string;
-  document: Document
+  document: Document;
+
+  constructor() {
+    this.createdDate = new Date();
+  }
+
 }
