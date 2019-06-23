@@ -11,8 +11,8 @@ import {DocumentVersion} from "../model/document-version";
 export class FakeBackendInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const users: User[] = [
-      { id: '1', username: 'test', password: 'test', name: 'Test', email: 'test', admin: true },
-      { id: '2', username: 'anna', password: 'test', name: 'Anna', email: 'test', admin: true }
+      { id: '1', username: 'test', name: 'Test' },
+      { id: '2', username: 'anna', name: 'Anna' }
     ];
 
     const documents: Document[] = [
@@ -22,16 +22,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     ];
 
     const documentVersions: DocumentVersion[] = [
-      { id: '1', createdDate: new Date(), version: 1, file: 'Version1', document: documents[0] },
-      { id: '2', createdDate: new Date(), version: 1, file: 'Version2', document: documents[0] },
-      { id: '3', createdDate: new Date(), version: 1, file: 'Version3', document: documents[0] }
+      { id: '1', createdDate: new Date(), version: 1, filename: 'Version1', document: documents[0] },
+      { id: '2', createdDate: new Date(), version: 1, filename: 'Version2', document: documents[0] },
+      { id: '3', createdDate: new Date(), version: 1, filename: 'Version3', document: documents[0] }
     ];
 
     const documentVersions1: DocumentVersion[] = [
-      { id: '4', createdDate: new Date(), version: 1, file: 'Version1', document: documents[1] },
+      { id: '4', createdDate: new Date(), version: 1, filename: 'Version1', document: documents[1] },
     ];
     const documentVersions2: DocumentVersion[] = [
-      { id: '5', createdDate: new Date(), version: 1, file: 'Version1', document: documents[2] },
+      { id: '5', createdDate: new Date(), version: 1, filename: 'Version1', document: documents[2] },
     ];
     documents[0].versions = documentVersions;
     documents[1].versions = documentVersions1;
@@ -47,13 +47,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       // authenticate - public
       if (request.url.endsWith('/users/authenticate') && request.method === 'POST') {
-        const user = users.find(x => x.username === request.body.username && x.password === request.body.password);
+        const user = users.find(x => x.username === request.body.username);
         if (!user) return error('Username or password is incorrect');
         return ok({
           id: user.id,
           username: user.username,
           firstName: user.name,
-          token: `fake-jwt-token`
         });
       }
 

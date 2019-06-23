@@ -26,14 +26,16 @@ export class AppComponent {
 
   logout() {
     this.authenticationService.logout();
+    this.router.navigate(['/logout']);
+  }
+
+  login() {
+    this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
-  // logout2() {
-  //   this.http.post('logout', {}).finally(() => {
-  //     this.authenticationService.authenticated = false;
-  //     this.router.navigateByUrl('/login');
-  //   }).subscribe();
-  // }
 
-
+  register() {
+    this.authenticationService.logout();
+    this.router.navigate(['/register']);
+  }
 }

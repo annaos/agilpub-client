@@ -4,7 +4,7 @@ export class DocumentVersion {
   id: string;
   createdDate: Date;
   version: number;
-  file: string;
+  filename: string;
   document: Document;
 
   constructor() {

@@ -10,12 +10,14 @@ import {DocumentVersion} from "../model/document-version";
 })
 export class DocumentService {
 
+  private documentUrl: string;
   private documentsUrl: string;
   private documentVersionsUrl: string;
 
   constructor(private http: HttpClient) {
-    this.documentsUrl = 'http://localhost:8080/documents';
-    this.documentVersionsUrl = 'http://localhost:8080/documentVersions';
+    this.documentUrl = 'http://localhost:8080/document/';
+    this.documentsUrl = 'http://localhost:8080/documents/';
+    this.documentVersionsUrl = 'http://localhost:8080/documentVersions/';
   }
 
   public findAll(): Observable<Document[]> {
@@ -23,20 +25,14 @@ export class DocumentService {
   }
 
   public findByOwner(user: User): Observable<Document[]> {
-    return this.http.get<Document[]>(this.documentsUrl, {
-      params: {
-        userId: user.id,
-      }});
+    return this.http.get<Document[]>(this.documentsUrl + user.id);
   }
 
   public findById(id: string): Observable<Document> {
-    return this.http.get<Document>(this.documentsUrl, {
-      params: {
-        documentId: id,
-      }});
+    return this.http.get<Document>(this.documentUrl + id);
   }
 
   public save(document: Document) {
-    return this.http.post<Document>(this.documentsUrl, document);
+    return this.http.post<Document>(this.documentUrl, document);
   }
 }

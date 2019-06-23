@@ -10,20 +10,27 @@ import {DocumentVersion} from "../model/document-version";
 })
 export class DocumentVersionService {
 
+  private documentVersionUrl: string;
   private documentVersionsUrl: string;
 
   constructor(private http: HttpClient) {
-    this.documentVersionsUrl = 'http://localhost:8080/documentVersions';
+    this.documentVersionUrl = 'http://localhost:8080/documentversion/';
+    this.documentVersionsUrl = 'http://localhost:8080/documentversions/';
   }
 
   public findByDocument(document: Document): Observable<DocumentVersion[]> {
-    return this.http.get<DocumentVersion[]>(this.documentVersionsUrl, {
-      params: {
-        documentId: document.id,
-      }});
+    return this.http.get<DocumentVersion[]>(this.documentVersionsUrl + document.id);
+  }
+
+  public findById(documentVersion: DocumentVersion): Observable<DocumentVersion> {
+    return this.http.get<DocumentVersion>(this.documentVersionUrl + documentVersion.id);
+  }
+
+  public getFile(documentVersion: DocumentVersion): Observable<File> {
+    return this.http.get<File>(this.documentVersionUrl + documentVersion.id + '/filename');
   }
 
   public save(documentVersion: DocumentVersion) {
-    return this.http.post<Document>(this.documentVersionsUrl, documentVersion);
+    return this.http.post<Document>(this.documentVersionUrl, documentVersion);
   }
 }

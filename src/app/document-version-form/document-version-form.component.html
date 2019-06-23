@@ -5,7 +5,7 @@
     <form (ngSubmit)="onSubmit()" #documentForm="ngForm">
       <div class="form-group">
         <label for="file">Datei</label>
-        <input type="text" [(ngModel)]="documentVersion.file"
+        <input type="text" [(ngModel)]="documentVersion.filename"
                id="file" name="file"
                required #file="ngModel">
         <div [hidden]="!file.pristine" class="alert alert-danger">Datei is required</div>
