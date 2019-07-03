@@ -59,9 +59,6 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         });
 
-    // this.authenticationService.authenticate(this.f.username.value, this.f.password.value, () => {
-    //   this.router.navigateByUrl('/');
-    // });
     return false;
 
   }

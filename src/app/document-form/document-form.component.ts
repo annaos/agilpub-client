@@ -36,7 +36,7 @@ export class DocumentFormComponent implements OnInit {
     this.document = new Document();
     this.document.owner = this.authenticationService.currentUserValue;
     this.documentVersion = new DocumentVersion();
-//    this.documentVersion.document = this.document; //TODO ERROR JSON parse error: No _valueDeserializer assigned
+    this.documentVersion.document = this.document;
 
     const headers = [{name: 'Accept', value: 'application/json'}];
     this.uploader = new FileUploader({url: 'http://localhost:8080/api/files', headers: headers});
@@ -44,7 +44,6 @@ export class DocumentFormComponent implements OnInit {
     this.uploader.onAfterAddingFile = (fileItem) => {
       fileItem.withCredentials = false;
       this.fileItem = fileItem;
-      console.log(fileItem);
     };
 
   }
@@ -56,10 +55,7 @@ export class DocumentFormComponent implements OnInit {
 
     this.uploader.uploadItem(this.fileItem);
     this.uploader.uploadAll();
-    this.documentService.save(this.document).subscribe(result => {
-      this.documentVersionService.save(this.documentVersion).subscribe(result =>
-        this.gotoDocumentList());
-    });
+    this.documentVersionService.save(this.documentVersion).subscribe(result => this.gotoDocumentList());
   }
 
   fileOverAnother(e: any): void {

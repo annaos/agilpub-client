@@ -4,11 +4,17 @@
     <div> Neue Version für {{ document.name }} hochladen </div>
     <form (ngSubmit)="onSubmit()" #documentForm="ngForm">
       <div class="form-group">
-        <label for="file">Datei</label>
-        <input type="text" [(ngModel)]="documentVersion.filename"
-               id="file" name="file"
-               required #file="ngModel">
-        <div [hidden]="!file.pristine" class="alert alert-danger">Datei is required</div>
+        <input #fileInput type="file" ng2FileSelect [uploader]="uploader"/>
+
+        <div class="drop-box" ng2FileDrop
+             [ngClass]="{'dragover': isDropOver}"
+             [uploader]="uploader"
+             (fileOver)="fileOverAnother($event)"
+             (click)="fileClicked()">
+          <span class="drag-in-title">Import or drag file here</span>
+          <span class="drag-over-title">Drop the file</span>
+        </div>
+        <div [hidden]="fileItem != undefined" class="alert alert-danger">File is required</div>
       </div>
       <button type="submit" [disabled]="!documentForm.form.valid" class="btn btn-info">Submit</button>
     </form>

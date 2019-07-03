@@ -36,9 +36,10 @@
   <th scope="col">#</th>
   <th scope="col">Name</th>
   <th scope="col">Datum</th>
-  <th scope="col">Besitzer</th>
   <th scope="col">Anzahl von Versionen</th>
-  <th scope="col">Aktion</th>
+  <th scope="col">Liste von Versionen</th>
+  <th scope="col">Letzte Version</th>
+  <th scope="col">Besitzer</th>
   </tr>
 </thead>
   <tbody>
@@ -46,13 +47,10 @@
   <td>{{ document.id }}</td>
   <td>{{ document.name }}</td>
   <td>{{ document.createdDate | createdDateFormat }}</td>
-  <td>{{ document.owner.name }}</td>
   <td>{{ document.versions.length }}</td>
-  <td>
-    <a [routerLink]="['/versions', document.id]" class="btn btn-info">list</a>
-    <span class="btn btn-info">last</span>
-<!--    <span *ngIf="authenticationService.admin" class="btn btn-info">new</span>-->
-  </td>
+  <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
+  <td><span class="btn btn-info">last</span></td>
+  <td>{{ document.owner.name }}</td>
   </tr>
 </tbody>
   </table>

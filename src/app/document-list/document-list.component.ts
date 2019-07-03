@@ -20,13 +20,27 @@ export class DocumentListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.documentService.findByOwner(this.authenticationService.currentUserValue).subscribe(data => {
-      this.myDocuments = data;
+    this.documentService.findByOwner(this.authenticationService.currentUserValue).subscribe(myDocuments => {
+      this.myDocuments = myDocuments;
+
+      this.documentService.findAll().subscribe(data => {
+        let restDocuments = [];
+        data.forEach( function(value1) {
+          let exist = false;
+          myDocuments.forEach( function(value2) {
+            if (value1.id === value2.id) {
+              exist = true;
+            }
+          });
+          if (!exist) {
+            restDocuments.push(value1);
+          }
+        });
+
+        this.allDocuments = restDocuments;
+      });
     });
 
-    this.documentService.findAll().subscribe(data => {
-      this.allDocuments = data;//TODO without myDocuments
-    });
   }
 
 }

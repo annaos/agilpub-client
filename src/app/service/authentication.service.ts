@@ -9,7 +9,7 @@ import { User } from '../model/user';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  authenticated = false;//TODO use in login too
+  authenticated = false;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
