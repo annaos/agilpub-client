@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { User } from '../model/user';
+import {Router} from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -11,9 +12,13 @@ export class AuthenticationService {
   public currentUser: Observable<User>;
   authenticated = false;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
+    this.authenticated = this.currentUserValue != undefined;
   }
 
   public get currentUserValue(): User {
@@ -27,6 +32,7 @@ export class AuthenticationService {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.authenticated = true;
           this.currentUserSubject.next(user);
+          this.router.navigate(['/documents']);
         } else {
           this.authenticated = false;
         }

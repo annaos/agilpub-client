@@ -13,11 +13,16 @@ import { LoginComponent } from './login/login.component';
 import { DocumentListComponent } from './document-list/document-list.component';
 import { DocumentVersionListComponent } from './document-version-list/document-version-list.component';
 import {createdDateFormatPipe} from "./_helpers";
+import {getLastVersionPipe} from "./_helpers";
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { DocumentVersionFormComponent } from './document-version-form/document-version-form.component';
 import { RegisterComponent } from './register/register.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { DocumentVersionFileComponent } from './document-version-file/document-version-file.component';
+import * as fileSaver from 'file-saver';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import {Document} from './model/document';
 
 @NgModule({
   declarations: [
@@ -27,9 +32,11 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     DocumentListComponent,
     DocumentVersionListComponent,
     createdDateFormatPipe,
+    getLastVersionPipe,
     DocumentFormComponent,
     DocumentVersionFormComponent,
-    RegisterComponent
+    RegisterComponent,
+    DocumentVersionFileComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +46,7 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     ReactiveFormsModule,
     FileUploadModule,
     FlashMessagesModule.forRoot(),
+    PdfViewerModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

@@ -8,6 +8,7 @@ import {DocumentVersionListComponent} from "./document-version-list/document-ver
 import {DocumentFormComponent} from "./document-form/document-form.component";
 import {DocumentVersionFormComponent} from "./document-version-form/document-version-form.component";
 import {RegisterComponent} from "./register/register.component";
+import {DocumentVersionFileComponent} from "./document-version-file/document-version-file.component";
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent, canActivate: [AuthGuard] },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'adddocument', component: DocumentFormComponent, canActivate: [AuthGuard] },
   { path: 'addversion/:id', component: DocumentVersionFormComponent, canActivate: [AuthGuard] },
   { path: 'versions/:id', component: DocumentVersionListComponent, canActivate: [AuthGuard] },
+  { path: 'version/:id', component: DocumentVersionFileComponent, canActivate: [AuthGuard] },
 
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },

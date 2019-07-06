@@ -11,4 +11,16 @@ export class Document {
   constructor() {
     this.createdDate = new Date();
   }
+
+  // not need - used as pipe getLastVersionPipe
+  lastVersion?(): String {
+    let last;
+    for (let version of this.versions) {
+      if (last == undefined || last.id < version.id) {
+        last = version;
+      }
+    }
+    return last;
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Document} from "../model/document";
 import {User} from "../model/user";
@@ -22,12 +22,23 @@ export class DocumentVersionService {
     return this.http.get<DocumentVersion[]>(this.documentVersionsUrl + document.id);
   }
 
-  public findById(documentVersion: DocumentVersion): Observable<DocumentVersion> {
+  public findByVersion(documentVersion: DocumentVersion): Observable<DocumentVersion> {
     return this.http.get<DocumentVersion>(this.documentVersionUrl + documentVersion.id);
   }
 
-  public getFile(documentVersion: DocumentVersion): Observable<File> {
-    return this.http.get<File>(this.documentVersionUrl + documentVersion.id + '/filename');
+  public findById(id: String): Observable<DocumentVersion> {
+    return this.http.get<DocumentVersion>(this.documentVersionUrl + id);
+  }
+
+  public getFile(documentVersion: DocumentVersion): Observable<HttpResponse<Blob>> {
+    let headers = new HttpHeaders();
+    headers = headers.append('Accept', 'application/pdf');
+
+    return this.http.get(this.documentVersionUrl + documentVersion.id + '/file', {
+      headers: headers,
+      observe: 'response',
+      responseType: 'blob'
+    });
   }
 
   public save(documentVersion: DocumentVersion) {

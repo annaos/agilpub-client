@@ -18,11 +18,11 @@
 <!--        <td>{{ version.createdDate | date:'dd.MM.yyyy \'um\' HH:mm:ss'}}</td> old date format -->
         <td>{{ version.createdDate | createdDateFormat }}</td>
         <td>TODO</td>
-        <td>{{ version.filename }}</td>
+        <td><a [routerLink]="['/version', version.id]">show</a></td>
       </tr>
       </tbody>
     </table>
-    <a [routerLink]="['/addversion', document.id]" class="btn btn-info">new Version erstellen</a>
+    <a [routerLink]="['/addversion', document.id]" class="btn btn-info">create new version</a>
   </div>
 
 </div>

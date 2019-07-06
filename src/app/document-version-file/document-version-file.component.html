@@ -1,0 +1,18 @@
+<div *ngIf="isLoaded" class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div style="text-align: center;">
+        <span>{{ page }} / {{ totalPages }}</span>
+        <button (click)="addScore()">addScore</button>
+      </div>
+
+      <span class="btn btn-info" (click)="download()">download</span>
+    </div>
+  </div>
+</div>
+
+<pdf-viewer src="{{fileURL}}"
+            [render-text]="true"
+            [render-text-mode]="2"
+            (after-load-complete)="afterLoadComplete($event)"
+></pdf-viewer>
