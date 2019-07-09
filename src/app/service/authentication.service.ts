@@ -32,7 +32,6 @@ export class AuthenticationService {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.authenticated = true;
           this.currentUserSubject.next(user);
-          this.router.navigate(['/documents']);
         } else {
           this.authenticated = false;
         }
