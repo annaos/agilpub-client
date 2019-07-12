@@ -1,5 +1,5 @@
 <div class="file_container">
-  <div class="file_container__left-side">
+  <div class="file_container__left-side mt-2">
     <div [hidden]="!inRendering" class="my-spinner">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
@@ -34,21 +34,21 @@
   <div class="file_container__right-side">
     <div class="list">
       <div *ngIf="currentComment" class="list-row">
-        <div *ngIf="canDeleteCurrentComment" class="delete-btn">
-          <i class="material-icons icon" (click)="delete(); $event.stopPropagation();">delete</i>
+        <div *ngIf="canDeleteCurrentComment" class="delete-btn mt-5 mr-2">
+          <i class="btn btn-danger" (click)="delete(); $event.stopPropagation();">remove</i>
         </div>
         <h3>Choosen comment</h3>
         <div>Author: {{ currentComment.owner.name }}</div>
         <div>Selected text: </div>
-        <textarea disabled="disabled" rows="4">{{ currentComment.toText }}</textarea>
+        <textarea disabled="disabled" rows="2">{{ currentComment.toText }}</textarea>
         <div>Comment: </div>
-        <textarea disabled="disabled" rows="3">{{ currentComment.text }}</textarea>
+        <textarea disabled="disabled" rows="2">{{ currentComment.text }}</textarea>
       </div>
 
       <div *ngIf="newComment" class="list-row">
         <h3>Create comment</h3>
         <div>Selected text:</div>
-        <textarea disabled="disabled" rows="11">{{ newComment.toText }}</textarea>
+        <textarea disabled="disabled" rows="3">{{ newComment.toText }}</textarea>
         <div>
           Comment:
           <input type="text" [(ngModel)]="newComment.text"

@@ -13,7 +13,9 @@
   }
   &__right-side {
     width: 20%;
+    position: fixed;
     overflow-x: auto;
+    left: 80%;
   }
 }
 
@@ -40,8 +42,8 @@
     border-bottom: 1px solid black;
     cursor: pointer;
     position: relative;
-    &:hover {
-      background-color: #d5d5d5;
+    &:last-child {
+      background-color: #e5e5e5;
     }
     .delete-btn {
       position: absolute;

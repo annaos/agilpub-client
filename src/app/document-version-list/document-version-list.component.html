@@ -18,11 +18,11 @@
 <!--        <td>{{ version.createdDate | date:'dd.MM.yyyy \'um\' HH:mm:ss'}}</td> old date format -->
         <td>{{ version.createdDate | createdDateFormat }}</td>
         <td>{{ version.comments.length }}</td>
-        <td><a [routerLink]="['/version', version.id]">show</a></td>
+        <td><a [routerLink]="['/version', version.id]" class="btn btn-info">show</a></td>
       </tr>
       </tbody>
     </table>
-    <a [routerLink]="['/addversion', document.id]" class="btn btn-info">Create a new version</a>
+    <a *ngIf="canCreateNewVersion" [routerLink]="['/addversion', document.id]" class="btn btn-info">Create a new version</a>
   </div>
 
 </div>
