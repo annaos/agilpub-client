@@ -10,6 +10,7 @@ export class Comment {
   text: String;
   selection: String;
   toText: String;
+  highlights;
 
   constructor() {
     this.createdDate = new Date();

@@ -56,3 +56,14 @@
     }
   }
 }
+
+.my-spinner {
+  position: fixed;
+  top: 40%;
+  left: 40%;
+  z-index: 99;
+  .spinner-grow {
+    width: 5rem;
+    height: 5rem;
+  }
+}

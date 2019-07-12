@@ -1,14 +1,14 @@
 <div class="card my-5">
   <div class="card-body" *ngIf="document">
-    <p>Versionen von {{document.name}}</p>
+    <p>Versions of <span class="font-weight-bold">{{ document.name }}</span></p>
     <table class="table table-bordered table-striped">
       <thead class="thead-dark">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Version</th>
-        <th scope="col">Datum</th>
-        <th scope="col">Anzahl Kommentare</th>
-        <th scope="col">Datei öffnen</th>
+        <th scope="col">Date</th>
+        <th scope="col">Amount of comments</th>
+        <th scope="col">Open the file</th>
       </tr>
       </thead>
       <tbody>
@@ -17,12 +17,12 @@
         <td>{{ version.version }}</td>
 <!--        <td>{{ version.createdDate | date:'dd.MM.yyyy \'um\' HH:mm:ss'}}</td> old date format -->
         <td>{{ version.createdDate | createdDateFormat }}</td>
-        <td>TODO</td>
+        <td>{{ version.comments.length }}</td>
         <td><a [routerLink]="['/version', version.id]">show</a></td>
       </tr>
       </tbody>
     </table>
-    <a [routerLink]="['/addversion', document.id]" class="btn btn-info">create new version</a>
+    <a [routerLink]="['/addversion', document.id]" class="btn btn-info">Create a new version</a>
   </div>
 
 </div>

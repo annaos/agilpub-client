@@ -23,6 +23,7 @@ import { DocumentVersionFileComponent } from './document-version-file/document-v
 import * as fileSaver from 'file-saver';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {Document} from './model/document';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {Document} from './model/document';
     DocumentFormComponent,
     DocumentVersionFormComponent,
     RegisterComponent,
-    DocumentVersionFileComponent
+    DocumentVersionFileComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

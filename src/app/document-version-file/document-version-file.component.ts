@@ -13,8 +13,6 @@ import * as rangyC from '@rangy/classapplier';
 import {Comment} from "../model/comment";
 import {CommentService} from "../service/comment.service";
 
-declare var $: any;
-
 @Component({
   selector: 'app-document-version-file',
   templateUrl: './document-version-file.component.html',
@@ -31,13 +29,12 @@ export class DocumentVersionFileComponent implements OnInit {
   totalPages: number;
   pageRenderes: number = 0;
   isLoaded: boolean = false;
+  inRendering: boolean = true;
   currentComment: Comment;
   newComment: Comment;
+  canDeleteCurrentComment: boolean = false;
   error = '';
-
-  @ViewChild('pdfViewer') pdfViewer:ElementRef;
-
-
+  highlighter = rangyH.createHighlighter();
 
   constructor(private documentVersionService: DocumentVersionService,
               private commentService: CommentService,
@@ -45,15 +42,15 @@ export class DocumentVersionFileComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.inRendering = true;
 
-        this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       let documentVersionId = params['id'];
       this.documentVersionService.findById(documentVersionId).subscribe(version => {
         this.version = version;
         this.commentService.findByVersion(version).subscribe(comments => {
-          this.comments = comments;
+          this.version.comments = comments;
         });
-        this.newComment.version = version;
         this.documentVersionService.getFile(version).subscribe(data => {
           this.file = new Blob([data.body], {type: 'application/pdf'});
           this.fileURL = URL.createObjectURL(this.file);
@@ -61,66 +58,73 @@ export class DocumentVersionFileComponent implements OnInit {
       });
     });
 
-    this.newComment = new Comment();
-    this.newComment.owner = this.authenticationService.currentUserValue;
-
     //fake backend
     //this.fileURL = '/assets/test.pdf';
-    //this.comments = [{id:'1', createdDate: new Date(), text: 'My comment', selection: '0/54/1/0/0/0/2/0/0/2/0/0/1/1/2:0,0/54/1/0/0/0/2/0/0/2/0/0/1/1/2:1', toText: 'for this text'}];
+    //this.version.comments = [{id:'1', createdDate: new Date(), text: 'My comment', selection: '0/54/1/0/0/0/2/0/0/2/0/0/1/1/2:0,0/54/1/0/0/0/2/0/0/2/0/0/1/1/2:1', toText: 'for this text'}];
   }
 
   afterLoadComplete(pdfData: any) {
     this.totalPages = pdfData.numPages;
     this.isLoaded = true;
-    console.log('(afterLoadComplete)');
   }
 
   textLayerRendered(e: CustomEvent) {
     this.pageRenderes++;
     if (this.pageRenderes === this.totalPages) {
-      console.log('(text-layer-rendered fertig)');
-      this.highlightComments();
+      let self = this;
+      this.version.comments.forEach(function(comment) {
+        self.highlightComment(comment);
+        rangy.getSelection().collapseToStart();
+      });
+      this.inRendering = false;
     }
   }
 
-  highlightComments() {
-    let highlighter = rangyH.createHighlighter();
-
-    let options = {'exclusive': true};
-    let pdfViewer = this.pdfViewer.nativeElement;
+  highlightComment(comment: Comment) {
     let self = this;
-    this.comments.forEach(function(comment) {
-      let myLocalFunction = function () {
-        self.setCurrentComment(comment);
-      };
-      if (rangyS.canDeserializeSelection(comment.selection, pdfViewer)) {
-        rangyS.deserializeSelection(comment.selection, pdfViewer);
-        highlighter.addClassApplier(rangyC.createClassApplier("bg-warning", {// bg-warning or  highlight
-          ignoreWhiteSpace: true,
-          elementProperties: {
-            onclick: function () {
-              console.log(comment);
-              myLocalFunction();
-            }
+    let options = {'exclusive': true};
+
+    let myLocalFunction = function () {
+      self.setCurrentComment(comment);
+    };
+    if (rangyS.canDeserializeSelection(comment.selection)) {
+      rangyS.deserializeSelection(comment.selection);
+      this.highlighter.addClassApplier(rangyC.createClassApplier("bg-warning", {
+        ignoreWhiteSpace: true,
+        elementProperties: {
+          commentId: comment.id,
+          onclick: function (e) {
+            myLocalFunction();
           }
-        }));
-        highlighter.highlightSelection('bg-warning', options);
-      } else {
-        console.log('Error: can not deserialize comment #' + comment.id);
-      }
-    })
+        }
+      }));
+      comment.highlights = this.highlighter.highlightSelection('bg-warning', options);
+    } else {
+      console.log('Error: can not deserialize comment #' + comment.id);
+    }
   }
 
   setCurrentComment(comment: Comment) {
     this.currentComment = comment;
+    if (comment.owner.id == this.authenticationService.currentUserValue.id) {
+      this.canDeleteCurrentComment = true;
+    } else {
+      this.canDeleteCurrentComment = false;
+    }
   }
 
   mouseEvent(e: MouseEvent) {
     let rangySelection = rangy.getSelection();
     let text = rangySelection.toString();
+
+
     if (text != '') {
+      this.newComment = new Comment();
+      this.newComment.owner = this.authenticationService.currentUserValue;
+      this.newComment.version = this.version;
+
       this.newComment.toText = text;
-      this.newComment.selection = rangyS.serializeSelection(rangySelection, true, this.pdfViewer.nativeElement);
+      this.newComment.selection = rangyS.serializeSelection(rangySelection, true);
     }
   }
 
@@ -134,11 +138,25 @@ export class DocumentVersionFileComponent implements OnInit {
   }
 
   saveComment() {
-    console.log('(saveComment)');
     if (this.newComment) {
-      this.commentService.save(this.newComment).subscribe(result => console.log('comment saved'));
+      this.commentService.save(this.newComment).subscribe(result => {
+        this.newComment = result;
+        this.highlightComment(this.newComment);
+        this.version.comments.push(this.newComment);
+        this.newComment = undefined;
+      });
     } else {
       this.error = 'Please choose text to comment.';
+    }
+  }
+
+  delete() {
+    if (this.currentComment) {
+      this.commentService.delete(this.currentComment.id).subscribe(result => {
+        this.highlighter.removeHighlights(this.currentComment.highlights);
+        this.currentComment = undefined;
+        this.canDeleteCurrentComment = false;
+      });
     }
   }
 

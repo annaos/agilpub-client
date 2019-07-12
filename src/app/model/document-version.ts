@@ -1,4 +1,5 @@
 import {Document} from "./document";
+import {Comment} from "./comment";
 
 export class DocumentVersion {
   id: string;
@@ -6,6 +7,7 @@ export class DocumentVersion {
   version: number;
   filename: string;
   document: Document;
+  comments?: Array<Comment>;
 
   constructor() {
     this.createdDate = new Date();

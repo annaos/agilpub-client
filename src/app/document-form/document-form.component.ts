@@ -21,9 +21,9 @@ export class DocumentFormComponent implements OnInit {
   uploader: FileUploader;
   isDropOver: boolean;
 
-  document: Document;
   documentVersion: DocumentVersion;
   fileItem: FileItem;
+  originalName: String;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -33,15 +33,15 @@ export class DocumentFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.document = new Document();
-    this.document.owner = this.authenticationService.currentUserValue;
     this.documentVersion = new DocumentVersion();
-    this.documentVersion.document = this.document;
+    this.documentVersion.document = new Document();
+    this.documentVersion.document.owner = this.authenticationService.currentUserValue;
 
     const headers = [{name: 'Accept', value: 'application/json'}];
     this.uploader = new FileUploader({url: 'http://localhost:8080/api/files', headers: headers});
 
     this.uploader.onAfterAddingFile = (fileItem) => {
+      this.originalName = fileItem.file.name;
       fileItem.withCredentials = false;
       this.fileItem = fileItem;
     };

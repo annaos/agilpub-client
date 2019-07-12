@@ -9,6 +9,7 @@ import {DocumentFormComponent} from "./document-form/document-form.component";
 import {DocumentVersionFormComponent} from "./document-version-form/document-version-form.component";
 import {RegisterComponent} from "./register/register.component";
 import {DocumentVersionFileComponent} from "./document-version-file/document-version-file.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
   { path: 'users', component: UserListComponent, canActivate: [AuthGuard] },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'versions/:id', component: DocumentVersionListComponent, canActivate: [AuthGuard] },
   { path: 'version/:id', component: DocumentVersionFileComponent, canActivate: [AuthGuard] },
 
+  { path: '', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
 

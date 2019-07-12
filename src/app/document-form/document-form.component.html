@@ -1,10 +1,10 @@
 <div class="card my-5">
-  <h3>Neue Dokument erstellen</h3>
+  <h3>Create new document</h3>
   <div class="card-body">
     <form (ngSubmit)="onSubmit()" #documentForm="ngForm">
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" [(ngModel)]="document.name"
+        <input type="text" [(ngModel)]="documentVersion.document.name"
                class="form-control" id="name" name="name" placeholder="Enter name of the document"
                required #name="ngModel">
       </div>
@@ -21,6 +21,7 @@
           <span class="drag-over-title">Drop the file</span>
         </div>
         <div [hidden]="fileItem != undefined" class="alert alert-danger">File is required</div>
+        <div [hidden]="originalName == undefined" class="alert alert-info">{{ originalName }}</div>
       </div>
       <button type="submit" [disabled]="!documentForm.form.valid" class="btn btn-info">Submit</button>
     </form>

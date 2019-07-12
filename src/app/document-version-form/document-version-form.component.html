@@ -1,7 +1,7 @@
 <div class="card my-5">
-  <h3>Neue Version hochladen</h3>
+  <h3>Upload of a new version</h3>
   <div class="card-body"  *ngIf="document">
-    <div> Neue Version für {{ document.name }} hochladen </div>
+    <div> Upload a new version for <span class="font-weight-bold">{{ document.name }}</span></div>
     <form (ngSubmit)="onSubmit()" #documentForm="ngForm">
       <div class="form-group">
         <input #fileInput type="file" ng2FileSelect [uploader]="uploader"/>
@@ -15,6 +15,7 @@
           <span class="drag-over-title">Drop the file</span>
         </div>
         <div [hidden]="fileItem != undefined" class="alert alert-danger">File is required</div>
+        <div [hidden]="originalName == undefined" class="alert alert-info">{{ originalName }}</div>
       </div>
       <button type="submit" [disabled]="!documentForm.form.valid" class="btn btn-info">Submit</button>
     </form>

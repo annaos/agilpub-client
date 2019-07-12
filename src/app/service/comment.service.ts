@@ -32,4 +32,8 @@ export class CommentService {
   public save(comment: Comment) {
     return this.http.post<Comment>(this.commentUrl, comment);
   }
+
+  public delete(id: String) {
+    return this.http.get<Comment>(this.commentUrl + 'delete/' + id);
+  }
 }

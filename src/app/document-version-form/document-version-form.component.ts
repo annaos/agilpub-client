@@ -20,6 +20,7 @@ export class DocumentVersionFormComponent implements OnInit {
   uploader: FileUploader;
   isDropOver: boolean;
   fileItem: FileItem;
+  originalName: String;
 
   document: Document;
   documentVersion: DocumentVersion;
@@ -44,14 +45,15 @@ export class DocumentVersionFormComponent implements OnInit {
           this._flashMessagesService.show('Sie dürfen neue Version nur für eigene Dokumente hochladen', { cssClass: 'alert-danger' });
           this.router.navigate(['/documents']);
         }
-        this.documentVersion.document = document;
         this.documentVersion.version = document.versions.length + 1;
-        });
+        this.documentVersion.document = document;
+      });
 
       const headers = [{name: 'Accept', value: 'application/json'}];
       this.uploader = new FileUploader({url: 'http://localhost:8080/api/files', headers: headers});
 
       this.uploader.onAfterAddingFile = (fileItem) => {
+        this.originalName = fileItem.file.name;
         fileItem.withCredentials = false;
         this.fileItem = fileItem;
       };

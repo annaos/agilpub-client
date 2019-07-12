@@ -1,18 +1,26 @@
 <div class="file_container">
   <div class="file_container__left-side">
+    <div [hidden]="!inRendering" class="my-spinner">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
     <div *ngIf="isLoaded" class="container">
       <div class="row">
         <div class="col-md-12">
           <div style="text-align: center;">
+            <span class="mr-3">{{ version.document.name }}</span>
             <span class="mr-3">{{ totalPages }} Pages</span>
             <button (click)="addScore()" class="mr-3">addScore</button>
+            <a routerLink="/versions/{{ version.document.id }}" class="btn btn-info mr-3">list of versions</a>
             <span class="btn btn-info" (click)="download()">download</span>
           </div>
         </div>
       </div>
     </div>
 
-    <pdf-viewer #pdfViewer src="{{fileURL}}"
+    <pdf-viewer src="{{fileURL}}"
                 [render-text]="true"
                 [render-text-mode]="2"
                 (after-load-complete)="afterLoadComplete($event)"
@@ -24,15 +32,14 @@
   </div>
 
   <div class="file_container__right-side">
-    <div class="header">
-      <h2>Comments</h2>
-    </div>
     <div class="list">
       <div *ngIf="currentComment" class="list-row">
-        <div class="delete-btn"></div> <!-- TODO if user is owner-->
+        <div *ngIf="canDeleteCurrentComment" class="delete-btn">
+          <i class="material-icons icon" (click)="delete(); $event.stopPropagation();">delete</i>
+        </div>
         <h3>Choosen comment</h3>
         <div>Author: {{ currentComment.owner.name }}</div>
-        <div>To text: </div>
+        <div>Selected text: </div>
         <textarea disabled="disabled" rows="4">{{ currentComment.toText }}</textarea>
         <div>Comment: </div>
         <textarea disabled="disabled" rows="3">{{ currentComment.text }}</textarea>
@@ -40,9 +47,7 @@
 
       <div *ngIf="newComment" class="list-row">
         <h3>Create comment</h3>
-        <div>
-          To text:
-        </div>
+        <div>Selected text:</div>
         <textarea disabled="disabled" rows="11">{{ newComment.toText }}</textarea>
         <div>
           Comment:
