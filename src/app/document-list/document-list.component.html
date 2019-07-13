@@ -8,6 +8,7 @@
         <th scope="col">Name</th>
         <th scope="col">Date</th>
         <th scope="col">Amount of versions</th>
+        <th scope="col">Score</th>
         <th scope="col">List of versions</th>
         <th scope="col">The newest version</th>
         <th scope="col">Upload new version</th>
@@ -19,6 +20,7 @@
         <td>{{ document.name }}</td>
         <td>{{ document.createdDate | createdDateFormat }}</td>
         <td>{{ document.versions.length }}</td>
+        <td>{{ document.score }}</td>
         <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
         <td><a routerLink="/version/{{ document.versions | getLastVersion }}" class="btn btn-info">show</a></td>
         <td><a [routerLink]="['/addversion', document.id]" class="btn btn-info">new</a></td>
@@ -37,6 +39,7 @@
         <th scope="col">Name</th>
         <th scope="col">Date</th>
         <th scope="col">Amount of versions</th>
+        <th scope="col">Score</th>
         <th scope="col">List of versions</th>
         <th scope="col">The newest version</th>
         <th scope="col">Owner</th>
@@ -48,6 +51,7 @@
         <td>{{ document.name }}</td>
         <td>{{ document.createdDate | createdDateFormat }}</td>
         <td>{{ document.versions.length }}</td>
+        <td>{{ document.score }}</td>
         <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
         <td><a routerLink="/version/{{ document.versions | getLastVersion }}" class="btn btn-info">show</a></td>
         <td>{{ document.owner.name }}</td>

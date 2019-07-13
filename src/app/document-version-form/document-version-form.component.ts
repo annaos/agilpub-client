@@ -42,7 +42,7 @@ export class DocumentVersionFormComponent implements OnInit {
         this.document = document;
 
         if (document.owner.id != this.authenticationService.currentUserValue.id) {
-          this._flashMessagesService.show('Sie dürfen neue Version nur für eigene Dokumente hochladen', { cssClass: 'alert-danger' });
+          this._flashMessagesService.show('It is allowed to load a new version only for your documents', { cssClass: 'alert-danger' });
           this.router.navigate(['/documents']);
         }
         this.documentVersion.version = document.versions.length + 1;

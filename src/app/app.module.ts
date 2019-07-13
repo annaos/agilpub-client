@@ -9,7 +9,6 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserService } from './service/user.service';
 import {ErrorInterceptor} from "./_helpers/error.interceptor";
 import { LoginComponent } from './login/login.component';
-//import {fakeBackendProvider} from "./_helpers/fake-backend";
 import { DocumentListComponent } from './document-list/document-list.component';
 import { DocumentVersionListComponent } from './document-version-list/document-version-list.component';
 import {createdDateFormatPipe} from "./_helpers";
@@ -24,6 +23,7 @@ import * as fileSaver from 'file-saver';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {Document} from './model/document';
 import { HomeComponent } from './home/home.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -49,11 +49,11 @@ import { HomeComponent } from './home/home.component';
     FileUploadModule,
     FlashMessagesModule.forRoot(),
     PdfViewerModule,
+    NgbModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     UserService,
-//    fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })

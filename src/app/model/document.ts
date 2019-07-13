@@ -7,6 +7,7 @@ export class Document {
   createdDate: Date;
   owner: User;
   versions: Array<DocumentVersion>;
+  score: number;
 
   constructor() {
     this.createdDate = new Date();

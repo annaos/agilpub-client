@@ -12,6 +12,9 @@ import * as rangyH from '@rangy/highlighter';
 import * as rangyC from '@rangy/classapplier';
 import {Comment} from "../model/comment";
 import {CommentService} from "../service/comment.service";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Score} from "../model/score";
+import {FlashMessagesService} from "angular2-flash-messages";
 
 @Component({
   selector: 'app-document-version-file',
@@ -35,11 +38,17 @@ export class DocumentVersionFileComponent implements OnInit {
   canDeleteCurrentComment: boolean = false;
   error = '';
   highlighter = rangyH.createHighlighter();
+  myScoreItem: number;
+
+  scoreItems: number[] = [-3, -2, -1, 0, 1, 2, 3];
+
 
   constructor(private documentVersionService: DocumentVersionService,
               private commentService: CommentService,
               private authenticationService: AuthenticationService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private modalService: NgbModal,
+              private _flashMessagesService: FlashMessagesService) { }
 
   ngOnInit() {
     this.inRendering = true;
@@ -48,6 +57,11 @@ export class DocumentVersionFileComponent implements OnInit {
       let documentVersionId = params['id'];
       this.documentVersionService.findById(documentVersionId).subscribe(version => {
         this.version = version;
+        this.documentVersionService.getScore(this.authenticationService.currentUserValue, this.version.document).subscribe(result => {
+          if (result) {
+            this.myScoreItem = result.score;
+          }
+        });
         this.commentService.findByVersion(version).subscribe(comments => {
           this.version.comments = comments;
         });
@@ -117,7 +131,6 @@ export class DocumentVersionFileComponent implements OnInit {
     let rangySelection = rangy.getSelection();
     let text = rangySelection.toString();
 
-
     if (text != '') {
       this.newComment = new Comment();
       this.newComment.owner = this.authenticationService.currentUserValue;
@@ -128,9 +141,18 @@ export class DocumentVersionFileComponent implements OnInit {
     }
   }
 
-  //TODO
-  addScore() {
-    console.log('add score');
+  addScore(scoreContent) {
+    this.modalService.open(scoreContent, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      let score = new Score();
+      score.document = this.version.document;
+      score.owner = this.authenticationService.currentUserValue;
+      score.score = result;
+      this.documentVersionService.saveScore(score).subscribe(result => {
+        this._flashMessagesService.show('Your score has been successful saved', { cssClass: 'alert-success' });
+        this.myScoreItem = score.score;
+        }
+      );
+    });
   }
 
   download() {

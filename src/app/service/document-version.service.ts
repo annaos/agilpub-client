@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {Document} from "../model/document";
 import {User} from "../model/user";
 import {DocumentVersion} from "../model/document-version";
+import {Score} from "../model/score";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,12 @@ export class DocumentVersionService {
 
   private documentVersionUrl: string;
   private documentVersionsUrl: string;
+  private scoreUrl: string;
 
   constructor(private http: HttpClient) {
     this.documentVersionUrl = 'http://localhost:8080/documentversion/';
     this.documentVersionsUrl = 'http://localhost:8080/documentversions/';
+    this.scoreUrl = 'http://localhost:8080/score/';
   }
 
   public findByDocument(document: Document): Observable<DocumentVersion[]> {
@@ -44,4 +47,13 @@ export class DocumentVersionService {
   public save(documentVersion: DocumentVersion) {
     return this.http.post<Document>(this.documentVersionUrl, documentVersion);
   }
+
+  public saveScore(score: Score) {
+    return this.http.post<Score>(this.scoreUrl, score);
+  }
+
+  public getScore(user: User, document: Document) {
+    return this.http.get<Score>(this.scoreUrl + user.id + '/' + document.id);
+  }
+
 }

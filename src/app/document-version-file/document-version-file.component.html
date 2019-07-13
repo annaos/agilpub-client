@@ -9,16 +9,40 @@
     <div *ngIf="isLoaded" class="container">
       <div class="row">
         <div class="col-md-12">
-          <div style="text-align: center;">
+          <div style="float: left;">
             <span class="mr-3">{{ version.document.name }}</span>
-            <span class="mr-3">{{ totalPages }} Pages</span>
-            <button (click)="addScore()" class="mr-3">addScore</button>
-            <a routerLink="/versions/{{ version.document.id }}" class="btn btn-info mr-3">list of versions</a>
+            <span class="mr-3">have {{ totalPages }} pages</span>
+            <button (click)="addScore(scoreContent)" class="btn btn-info mr-3">score</button>
             <span class="btn btn-info" (click)="download()">download</span>
+          </div>
+          <div style="float: right;">
+            <a routerLink="/versions/{{ version.document.id }}" class="btn btn-info mr-3">list of versions</a>
           </div>
         </div>
       </div>
     </div>
+
+    <ng-template #scoreContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Set score to the article</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button *ngFor="let scoreItem of scoreItems;"
+                    (click)="modal.close(scoreItem)"
+                    [class.btn-primary]="scoreItem == myScoreItem"
+                    [class.btn-secondary]="scoreItem != myScoreItem"
+                    type="button"
+                    class="btn"
+            >{{ scoreItem }}</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
     <pdf-viewer src="{{fileURL}}"
                 [render-text]="true"
