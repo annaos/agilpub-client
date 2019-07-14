@@ -5,6 +5,8 @@ import {DocumentVersionService} from "../service/document-version.service";
 import {Document} from "../model/document";
 import {DocumentVersion} from "../model/document-version";
 import {ActivatedRoute} from "@angular/router";
+import {Tag} from "../model/tag";
+import {TagService} from "../service/tag.service";
 
 @Component({
   selector: 'app-document-version-list',
@@ -16,9 +18,11 @@ export class DocumentVersionListComponent implements OnInit {
   document: Document;
   versions: DocumentVersion[];
   canCreateNewVersion: boolean = false;
+  deletedTags: Tag[] = [];
 
   constructor(private documentVersionService: DocumentVersionService,
               private documentService: DocumentService,
+              private tagService: TagService,
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute) { }
 
@@ -34,7 +38,15 @@ export class DocumentVersionListComponent implements OnInit {
           this.versions = data;
         })});
     });
+  }
 
+  deleteTag(tag: Tag) {
+    this.deletedTags.push(tag);
+    this.tagService.deleteTag(tag).subscribe(result => console.log('tag ' + tag.name + ' deleted'));
+  }
+
+  isDeleted(tag) {
+    return this.deletedTags.find(x => x.id == tag.id) != undefined;
   }
 
 }

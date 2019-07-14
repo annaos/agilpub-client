@@ -11,8 +11,12 @@
         <div class="col-md-12">
           <div style="float: left;">
             <span class="mr-3">{{ version.document.name }}</span>
-            <span class="mr-3">have {{ totalPages }} pages</span>
+            <span class="mr-3">has {{ totalPages }} pages</span>
             <button (click)="addScore(scoreContent)" class="btn btn-info mr-3">score</button>
+            <button *ngIf="canAddTag"
+                    (click)="addTag(tagContent)"
+                    class="btn btn-info mr-3"
+            >tag</button>
             <span class="btn btn-info" (click)="download()">download</span>
           </div>
           <div style="float: right;">
@@ -24,7 +28,7 @@
 
     <ng-template #scoreContent let-modal>
       <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Set score to the article</h4>
+        <h4 class="modal-title">Set document score</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -41,6 +45,21 @@
             >{{ scoreItem }}</button>
           </div>
         </div>
+      </div>
+    </ng-template>
+
+    <ng-template #tagContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Add new tags to the document</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <input class="form-control" name="tags" [formControl]="tagsFormModal" mdbInput>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
       </div>
     </ng-template>
 

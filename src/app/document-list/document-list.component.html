@@ -1,62 +1,85 @@
-<div class="card my-5">
-  <div class="card-body">
-    <p>My documents</p>
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Date</th>
-        <th scope="col">Amount of versions</th>
-        <th scope="col">Score</th>
-        <th scope="col">List of versions</th>
-        <th scope="col">The newest version</th>
-        <th scope="col">Upload new version</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let document of myDocuments">
-        <td>{{ document.id }}</td>
-        <td>{{ document.name }}</td>
-        <td>{{ document.createdDate | createdDateFormat }}</td>
-        <td>{{ document.versions.length }}</td>
-        <td>{{ document.score }}</td>
-        <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
-        <td><a routerLink="/version/{{ document.versions | getLastVersion }}" class="btn btn-info">show</a></td>
-        <td><a [routerLink]="['/addversion', document.id]" class="btn btn-info">new</a></td>
-      </tr>
-      </tbody>
-    </table>
-    <a [routerLink]="['/adddocument']" class="btn btn-info">Create new document</a>
+<div class="row">
+  <div class="col-10">
+    <div class="card my-5">
+      <div class="card-body">
+        <h2>My documents</h2>
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount of versions</th>
+            <th scope="col">Tags</th>
+            <th scope="col">Score</th>
+            <th scope="col">List of versions</th>
+            <th scope="col">The newest version</th>
+            <th scope="col">Upload new version</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let document of filteredMyDocuments">
+            <td>{{ document.id }}</td>
+            <td>{{ document.name }}</td>
+            <td>{{ document.createdDate | createdDateFormat }}</td>
+            <td>{{ document.versions.length }}</td>
+            <td>{{ document.tags | getTags }}</td>
+            <td>{{ document.score }}</td>
+            <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
+            <td><a routerLink="/version/{{ document.versions | getLastVersion }}" class="btn btn-info">show</a></td>
+            <td><a [routerLink]="['/addversion', document.id]" class="btn btn-info">new</a></td>
+          </tr>
+          </tbody>
+        </table>
+        <a [routerLink]="['/adddocument']" class="btn btn-info">Create new document</a>
+      </div>
+
+      <div class="card-body">
+        <h2>All documents</h2>
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount of versions</th>
+            <th scope="col">Tags</th>
+            <th scope="col">Score</th>
+            <th scope="col">List of versions</th>
+            <th scope="col">The newest version</th>
+            <th scope="col">Owner</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let document of filteredAllDocuments">
+            <td>{{ document.id }}</td>
+            <td>{{ document.name }}</td>
+            <td>{{ document.createdDate | createdDateFormat }}</td>
+            <td>{{ document.versions.length }}</td>
+            <td>{{ document.tags | getTags }}</td>
+            <td>{{ document.score }}</td>
+            <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
+            <td><a routerLink="/version/{{ document.versions | getLastVersion }}" class="btn btn-info">show</a></td>
+            <td>{{ document.owner.name }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <div class="card-body">
-    <p>All documents</p>
-    <table class="table table-bordered table-striped">
-      <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Date</th>
-        <th scope="col">Amount of versions</th>
-        <th scope="col">Score</th>
-        <th scope="col">List of versions</th>
-        <th scope="col">The newest version</th>
-        <th scope="col">Owner</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let document of allDocuments">
-        <td>{{ document.id }}</td>
-        <td>{{ document.name }}</td>
-        <td>{{ document.createdDate | createdDateFormat }}</td>
-        <td>{{ document.versions.length }}</td>
-        <td>{{ document.score }}</td>
-        <td><a routerLink="/versions/{{ document.id }}" class="btn btn-info">list</a></td>
-        <td><a routerLink="/version/{{ document.versions | getLastVersion }}" class="btn btn-info">show</a></td>
-        <td>{{ document.owner.name }}</td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="col-2">
+    <div class="card my-5">
+      <div class="card-body">
+        <h2>Tags</h2>
+        <span *ngFor="let tag of tags"
+            [class.btn-primary]="tag == filteredTag"
+            [class.btn-info]="tag != filteredTag"
+            class="btn btn-sm mr-2 mb-2"
+            (click)="filterByTag(tag)">
+          {{ tag.name }}
+        </span>
+      </div>
+    </div>
   </div>
 </div>

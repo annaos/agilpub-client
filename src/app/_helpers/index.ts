@@ -1,3 +1,3 @@
 export * from './error.interceptor';
 export * from './created-date-format-pipe';
-export * from './get-last-version-pipe';
+export * from './documents-pipe';

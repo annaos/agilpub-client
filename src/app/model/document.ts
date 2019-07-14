@@ -1,5 +1,6 @@
 import {User} from "./user";
 import {DocumentVersion} from "./document-version";
+import {Tag} from "./tag";
 
 export class Document {
   id: string;
@@ -8,6 +9,7 @@ export class Document {
   owner: User;
   versions: Array<DocumentVersion>;
   score: number;
+  tags: Array<Tag>;
 
   constructor() {
     this.createdDate = new Date();

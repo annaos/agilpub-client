@@ -15,6 +15,9 @@ import {CommentService} from "../service/comment.service";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Score} from "../model/score";
 import {FlashMessagesService} from "angular2-flash-messages";
+import {FormControl} from "@angular/forms";
+import {Tag} from "../model/tag";
+import {TagService} from "../service/tag.service";
 
 @Component({
   selector: 'app-document-version-file',
@@ -24,27 +27,34 @@ import {FlashMessagesService} from "angular2-flash-messages";
 export class DocumentVersionFileComponent implements OnInit {
 
   version: DocumentVersion;
+
+  // pdf load and render
   file: Object;
   fileURL: String;
-  comments: Array<Comment>;
-
-  page: number = 1;
   totalPages: number;
-  pageRenderes: number = 0;
+  pageRendered: number = 0;
   isLoaded: boolean = false;
   inRendering: boolean = true;
+
+  // comments render
+  comments: Array<Comment>;
   currentComment: Comment;
   newComment: Comment;
   canDeleteCurrentComment: boolean = false;
-  error = '';
   highlighter = rangyH.createHighlighter();
-  myScoreItem: number;
+  error: String = '';
 
+  // score
+  myScoreItem: number;
   scoreItems: number[] = [-3, -2, -1, 0, 1, 2, 3];
 
+  // tags
+  tagsFormModal = new FormControl('');
+  canAddTag: boolean = false;
 
   constructor(private documentVersionService: DocumentVersionService,
               private commentService: CommentService,
+              private tagService: TagService,
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
               private modalService: NgbModal,
@@ -57,6 +67,7 @@ export class DocumentVersionFileComponent implements OnInit {
       let documentVersionId = params['id'];
       this.documentVersionService.findById(documentVersionId).subscribe(version => {
         this.version = version;
+        this.canAddTag = this.version.document.owner.id == this.authenticationService.currentUserValue.id;
         this.documentVersionService.getScore(this.authenticationService.currentUserValue, this.version.document).subscribe(result => {
           if (result) {
             this.myScoreItem = result.score;
@@ -83,8 +94,8 @@ export class DocumentVersionFileComponent implements OnInit {
   }
 
   textLayerRendered(e: CustomEvent) {
-    this.pageRenderes++;
-    if (this.pageRenderes === this.totalPages) {
+    this.pageRendered++;
+    if (this.pageRendered === this.totalPages) {
       let self = this;
       this.version.comments.forEach(function(comment) {
         self.highlightComment(comment);
@@ -142,7 +153,7 @@ export class DocumentVersionFileComponent implements OnInit {
   }
 
   addScore(scoreContent) {
-    this.modalService.open(scoreContent, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(scoreContent, {ariaLabelledBy: 'modal-basic-title', size: 'sm' }).result.then((result) => {
       let score = new Score();
       score.document = this.version.document;
       score.owner = this.authenticationService.currentUserValue;
@@ -152,6 +163,21 @@ export class DocumentVersionFileComponent implements OnInit {
         this.myScoreItem = score.score;
         }
       );
+    });
+  }
+
+  addTag(tagContent) {
+    this.modalService.open(tagContent, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      let self = this;
+      this.tagsFormModal.value.split(' ').forEach(function (value) {
+        let tag = new Tag();
+        tag.name = value;
+        tag.documents = [self.version.document];
+        self.tagService.saveTag(tag).subscribe(result => {
+          self._flashMessagesService.show('Your tag ' + tag.name + ' has been successful saved', { cssClass: 'alert-success' });
+          }
+        );
+      });
     });
   }
 

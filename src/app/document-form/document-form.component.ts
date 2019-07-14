@@ -8,6 +8,7 @@ import {AuthenticationService} from "../service/authentication.service";
 import {DocumentVersionService} from "../service/document-version.service";
 import {DocumentVersion} from "../model/document-version";
 import {FileUploader, FileItem} from 'ng2-file-upload';
+import {Tag} from "../model/tag";
 
 @Component({
   selector: 'app-document-form',
@@ -24,6 +25,7 @@ export class DocumentFormComponent implements OnInit {
   documentVersion: DocumentVersion;
   fileItem: FileItem;
   originalName: String;
+  tags: String;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -55,6 +57,16 @@ export class DocumentFormComponent implements OnInit {
 
     this.uploader.uploadItem(this.fileItem);
     this.uploader.uploadAll();
+
+    if (this.tags != undefined && this.tags != '') {
+      let tags: Array<Tag> = new Array<Tag>();
+      this.tags.split(' ').forEach(function (value) {
+        let tag = new Tag();
+        tag.name = value;
+        tags.push(tag);
+      });
+      this.documentVersion.document.tags = tags;
+    }
     this.documentVersionService.save(this.documentVersion).subscribe(result => this.gotoDocumentList());
   }
 
