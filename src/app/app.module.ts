@@ -25,6 +25,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import {Document} from './model/document';
 import { HomeComponent } from './home/home.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {AppConfigModule} from "./app-config.module";
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     FileUploadModule,
     FlashMessagesModule.forRoot(),
     PdfViewerModule,
-    NgbModule
+    NgbModule,
+    AppConfigModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

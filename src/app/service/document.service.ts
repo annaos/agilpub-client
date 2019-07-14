@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Document} from "../model/document";
 import {User} from "../model/user";
+import { APP_CONFIG, AppConfig } from '../app-config.module';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,11 @@ export class DocumentService {
   private documentUrl: string;
   private documentsUrl: string;
 
-  constructor(private http: HttpClient) {
-    this.documentUrl = 'http://localhost:8080/document/';
-    this.documentsUrl = 'http://localhost:8080/documents/';
+  constructor(private http: HttpClient,
+              @Inject(APP_CONFIG) private config: AppConfig
+  ) {
+    this.documentUrl = this.config.apiEndpoint + '/document/';
+    this.documentsUrl = this.config.apiEndpoint + '/documents/';
   }
 
   public findAll(): Observable<Document[]> {

@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Document} from "../model/document";
 import {User} from "../model/user";
 import {DocumentVersion} from "../model/document-version";
 import {Score} from "../model/score";
+import { APP_CONFIG, AppConfig } from '../app-config.module';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,16 @@ export class DocumentVersionService {
   private documentVersionsUrl: string;
   private scoreUrl: string;
 
-  constructor(private http: HttpClient) {
-    this.documentVersionUrl = 'http://localhost:8080/documentversion/';
-    this.documentVersionsUrl = 'http://localhost:8080/documentversions/';
-    this.scoreUrl = 'http://localhost:8080/score/';
+  constructor(private http: HttpClient,
+              @Inject(APP_CONFIG) private config: AppConfig
+  ) {
+    this.documentVersionUrl = this.config.apiEndpoint + '/documentversion/';
+    this.documentVersionsUrl = this.config.apiEndpoint + '/documentversions/';
+    this.scoreUrl = this.config.apiEndpoint + '/score/';
+  }
+
+  public getFileUploadUrl() {
+    return this.config.apiEndpoint + '/api/files';
   }
 
   public findByDocument(document: Document): Observable<DocumentVersion[]> {

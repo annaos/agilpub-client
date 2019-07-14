@@ -1,6 +1,7 @@
-import {Injectable} from "@angular/core";
+import {Inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Tag} from "../model/tag";
+import { APP_CONFIG, AppConfig } from '../app-config.module';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,11 @@ export class TagService {
   private tagUrl: string;
   private tagsUrl: string;
 
-  constructor(private http: HttpClient) {
-    this.tagUrl = 'http://localhost:8080/tag/';
-    this.tagsUrl = 'http://localhost:8080/tags/';
+  constructor(private http: HttpClient,
+              @Inject(APP_CONFIG) private config: AppConfig
+  ) {
+    this.tagUrl = this.config.apiEndpoint + '/tag/';
+    this.tagsUrl = this.config.apiEndpoint + '/tags/';
   }
 
   public saveTag(tag: Tag) {

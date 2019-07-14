@@ -40,7 +40,7 @@ export class DocumentFormComponent implements OnInit {
     this.documentVersion.document.owner = this.authenticationService.currentUserValue;
 
     const headers = [{name: 'Accept', value: 'application/json'}];
-    this.uploader = new FileUploader({url: 'http://localhost:8080/api/files', headers: headers});
+    this.uploader = new FileUploader({url: this.documentVersionService.getFileUploadUrl(), headers: headers});
 
     this.uploader.onAfterAddingFile = (fileItem) => {
       this.originalName = fileItem.file.name;

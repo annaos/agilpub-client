@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { User } from '../model/user';
 import {Router} from "@angular/router";
+import { APP_CONFIG, AppConfig } from '../app-config.module';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -15,6 +16,7 @@ export class AuthenticationService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    @Inject(APP_CONFIG) private config: AppConfig
   ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
@@ -26,7 +28,7 @@ export class AuthenticationService {
   }
 
   login(username: string) {
-    return this.http.get<any>(`http://localhost:8080/users/` + username)
+    return this.http.get<any>(this.config.apiEndpoint + `users/` + username)
       .pipe(map(user => {
         if (user) {
           localStorage.setItem('currentUser', JSON.stringify(user));
@@ -40,7 +42,7 @@ export class AuthenticationService {
   }
 
   register(user: User) {
-    return this.http.post<any>(`http://localhost:8080/users`, { user })
+    return this.http.post<any>(this.config.apiEndpoint + `users`, { user })
       .pipe(result => {
         return this.login(user.username);
       });
