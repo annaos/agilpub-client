@@ -16,7 +16,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService, private http: HttpClient,
+    public authenticationService: AuthenticationService, private http: HttpClient,
   ) {
     this.title = 'Agile publication platform';
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);

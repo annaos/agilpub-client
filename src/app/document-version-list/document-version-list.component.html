@@ -6,7 +6,7 @@
       with tags
       <button *ngFor="let tag of document.tags" class="btn btn-info btn-sm mr-2" [hidden]="isDeleted(tag)">
         {{ tag.name }}
-        <span aria-hidden="true" (click)="deleteTag(tag)">&times;</span>
+        <span aria-hidden="true" *ngIf="isOwner" (click)="deleteTag(tag)">&times;</span>
       </button>
     </p>
     <table class="table table-bordered table-striped">
@@ -15,7 +15,7 @@
         <th scope="col">#</th>
         <th scope="col">Version</th>
         <th scope="col">Date</th>
-        <th scope="col">Amount of comments</th>
+        <th scope="col">Number of comments</th>
         <th scope="col">Open the file</th>
       </tr>
       </thead>
@@ -30,7 +30,7 @@
       </tr>
       </tbody>
     </table>
-    <a *ngIf="canCreateNewVersion" [routerLink]="['/addversion', document.id]" class="btn btn-info">Create a new version</a>
+    <a *ngIf="isOwner" [routerLink]="['/addversion', document.id]" class="btn btn-info">Create a new version</a>
   </div>
 
 </div>

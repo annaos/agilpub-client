@@ -18,6 +18,7 @@ import {FlashMessagesService} from "angular2-flash-messages";
 import {FormControl} from "@angular/forms";
 import {Tag} from "../model/tag";
 import {TagService} from "../service/tag.service";
+import {ScoreService} from "../service/score.service";
 
 @Component({
   selector: 'app-document-version-file',
@@ -53,6 +54,7 @@ export class DocumentVersionFileComponent implements OnInit {
   canAddTag: boolean = false;
 
   constructor(private documentVersionService: DocumentVersionService,
+              private scoreService: ScoreService,
               private commentService: CommentService,
               private tagService: TagService,
               private authenticationService: AuthenticationService,
@@ -68,7 +70,7 @@ export class DocumentVersionFileComponent implements OnInit {
       this.documentVersionService.findById(documentVersionId).subscribe(version => {
         this.version = version;
         this.canAddTag = this.version.document.owner.id == this.authenticationService.currentUserValue.id;
-        this.documentVersionService.getScore(this.authenticationService.currentUserValue, this.version.document).subscribe(result => {
+        this.scoreService.getScore(this.authenticationService.currentUserValue, this.version.document).subscribe(result => {
           if (result) {
             this.myScoreItem = result.score;
           }
@@ -158,7 +160,7 @@ export class DocumentVersionFileComponent implements OnInit {
       score.document = this.version.document;
       score.owner = this.authenticationService.currentUserValue;
       score.score = result;
-      this.documentVersionService.saveScore(score).subscribe(result => {
+      this.scoreService.saveScore(score).subscribe(result => {
         this._flashMessagesService.show('Your score has been successful saved', { cssClass: 'alert-success' });
         this.myScoreItem = score.score;
         }
@@ -169,14 +171,16 @@ export class DocumentVersionFileComponent implements OnInit {
   addTag(tagContent) {
     this.modalService.open(tagContent, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       let self = this;
-      this.tagsFormModal.value.split(' ').forEach(function (value) {
-        let tag = new Tag();
-        tag.name = value;
-        tag.documents = [self.version.document];
-        self.tagService.saveTag(tag).subscribe(result => {
-          self._flashMessagesService.show('Your tag ' + tag.name + ' has been successful saved', { cssClass: 'alert-success' });
-          }
-        );
+      this.tagsFormModal.value.split(',').forEach(function (value) {
+        if (value.trim() != '') {
+          let tag = new Tag();
+          tag.name = value.trim();
+          tag.documents = [self.version.document];
+          self.tagService.saveTag(tag).subscribe(result => {
+              self._flashMessagesService.show('Your tag ' + tag.name + ' has been successful saved', { cssClass: 'alert-success' });
+            }
+          );
+        }
       });
     });
   }

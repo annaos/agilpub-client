@@ -17,7 +17,7 @@ export class DocumentVersionListComponent implements OnInit {
 
   document: Document;
   versions: DocumentVersion[];
-  canCreateNewVersion: boolean = false;
+  isOwner: boolean = false;
   deletedTags: Tag[] = [];
 
   constructor(private documentVersionService: DocumentVersionService,
@@ -28,10 +28,10 @@ export class DocumentVersionListComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      let documentId = params['id']; // (+) converts string 'id' to a number
+      let documentId = params['id'];
       this.documentService.findById(documentId).subscribe(document => {
         if (document.owner.id == this.authenticationService.currentUserValue.id) {
-          this.canCreateNewVersion = true;
+          this.isOwner = true;
         }
         this.document = document;
         this.documentVersionService.findByDocument(document).subscribe(data => {

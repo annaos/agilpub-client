@@ -60,10 +60,12 @@ export class DocumentFormComponent implements OnInit {
 
     if (this.tags != undefined && this.tags != '') {
       let tags: Array<Tag> = new Array<Tag>();
-      this.tags.split(' ').forEach(function (value) {
-        let tag = new Tag();
-        tag.name = value;
-        tags.push(tag);
+      this.tags.split(',').forEach(function (value) {
+        if (value.trim() != '') {
+          let tag = new Tag();
+          tag.name = value.trim();
+          tags.push(tag);
+        }
       });
       this.documentVersion.document.tags = tags;
     }
