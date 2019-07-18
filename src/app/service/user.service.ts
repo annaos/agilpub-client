@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http: HttpClient,
               @Inject(APP_CONFIG) private config: AppConfig
   ) {
-    this.usersUrl = this.config.apiEndpoint + '/users';
+    this.usersUrl = this.config.apiEndpoint + 'users/';
   }
 
   public findAll(): Observable<User[]> {

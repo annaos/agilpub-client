@@ -17,7 +17,7 @@ export class CommentService {
               @Inject(APP_CONFIG) private config: AppConfig
   ) {
     this.commentUrl = this.config.apiEndpoint + 'comment/';
-    this.commentsUrl = this.config.apiEndpoint + '/comments/';
+    this.commentsUrl = this.config.apiEndpoint + 'comments/';
   }
 
   public findAll(): Observable<Comment[]> {

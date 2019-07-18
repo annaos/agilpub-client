@@ -16,8 +16,8 @@ export class DocumentService {
   constructor(private http: HttpClient,
               @Inject(APP_CONFIG) private config: AppConfig
   ) {
-    this.documentUrl = this.config.apiEndpoint + '/document/';
-    this.documentsUrl = this.config.apiEndpoint + '/documents/';
+    this.documentUrl = this.config.apiEndpoint + 'document/';
+    this.documentsUrl = this.config.apiEndpoint + 'documents/';
   }
 
   public findAll(): Observable<Document[]> {

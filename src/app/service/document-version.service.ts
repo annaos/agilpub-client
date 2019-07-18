@@ -16,12 +16,12 @@ export class DocumentVersionService {
   constructor(private http: HttpClient,
               @Inject(APP_CONFIG) private config: AppConfig
   ) {
-    this.documentVersionUrl = this.config.apiEndpoint + '/documentversion/';
-    this.documentVersionsUrl = this.config.apiEndpoint + '/documentversions/';
+    this.documentVersionUrl = this.config.apiEndpoint + 'documentversion/';
+    this.documentVersionsUrl = this.config.apiEndpoint + 'documentversions/';
   }
 
   public getFileUploadUrl() {
-    return this.config.apiEndpoint + '/api/files';
+    return this.config.apiEndpoint + 'api/files';
   }
 
   public findByDocument(document: Document): Observable<DocumentVersion[]> {

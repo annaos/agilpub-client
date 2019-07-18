@@ -15,7 +15,7 @@ export class ScoreService {
   constructor(private http: HttpClient,
               @Inject(APP_CONFIG) private config: AppConfig
   ) {
-    this.scoreUrl = this.config.apiEndpoint + '/score/';
+    this.scoreUrl = this.config.apiEndpoint + 'score/';
   }
 
   public saveScore(score: Score) {
